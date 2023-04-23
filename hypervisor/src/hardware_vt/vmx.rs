@@ -160,10 +160,12 @@ impl hardware_vt::HardwareVt for Vmx {
         //  VMCS region whose VMCS revision identifier differs from that used by
         //  the processor."
         // See: 25.2 FORMAT OF THE VMCS REGION
-        todo!("E#2-2");
+        // todo!("E#2-2");
         // Instruction: Make the VMCS "active" and "current" with the VMPTRLD
         //              instruction.
         // Hint: vmptrld(), self.vmcs_region
+        self.vmcs_region.revision_id = rdmsr(x86::msr::IA32_VMX_BASIC) as u32;
+        vmptrld(&mut self.vmcs_region);
 
         // The processor now has an associated VMCS (called a "current VMCS") and
         // is able to execute the VMREAD and VMWRITE instructions. Let us program
@@ -182,12 +184,16 @@ impl hardware_vt::HardwareVt for Vmx {
         sidt(&mut idtr);
         vmwrite(vmcs::host::CS_SELECTOR, self.host_gdt.cs.bits());
         vmwrite(vmcs::host::TR_SELECTOR, self.host_gdt.tr.bits());
-        todo!("E#2-3");
+        // todo!("E#2-3");
         // Instruction: Initialize host CR0, CR3, CR4 fields with current values.
         // Hint: vmcs::host::CR*, cr*(), vmwrite()
         vmwrite(vmcs::host::TR_BASE, self.host_gdt.tss.0.as_ptr() as u64);
         vmwrite(vmcs::host::GDTR_BASE, self.host_gdt.gdtr.base as u64);
         vmwrite(vmcs::host::IDTR_BASE, idtr.base as u64);
+
+        vmwrite(vmcs::host::CR0, cr0().bits() as u64);
+        vmwrite(vmcs::host::CR3, cr3());
+        vmwrite(vmcs::host::CR4, cr4().bits() as u64);
 
         // Control Field. We configure as follows:
         // - Specify that the host should run in the long-mode.
