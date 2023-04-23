@@ -319,9 +319,16 @@ impl hardware_vt::HardwareVt for Vmx {
         vmwrite(vmcs::guest::IA32_SYSENTER_CS, registers.sysenter_cs);
         vmwrite(vmcs::guest::IA32_SYSENTER_ESP, registers.sysenter_esp);
         vmwrite(vmcs::guest::IA32_SYSENTER_EIP, registers.sysenter_eip);
-        todo!("E#3-1");
+        // todo!("E#3-1");
         // Instruction: Configure guest IA32_EFER, CR0, CR3, CR4, RIP, RSP and RLAGS
         //              fields with values in the snapshot.
+        vmwrite(vmcs::guest::IA32_EFER_FULL, registers.efer);
+        vmwrite(vmcs::guest::CR0, registers.cr0);
+        vmwrite(vmcs::guest::CR3, registers.cr3);
+        vmwrite(vmcs::guest::CR4, registers.cr4);
+        vmwrite(vmcs::guest::RIP, registers.rip);
+        vmwrite(vmcs::guest::RSP, registers.rsp);
+        vmwrite(vmcs::guest::RFLAGS, registers.rflags);
         vmwrite(vmcs::guest::LINK_PTR_FULL, u64::MAX);
 
         // Set VMX-preemption timer counter if the processor supports it. Convert
