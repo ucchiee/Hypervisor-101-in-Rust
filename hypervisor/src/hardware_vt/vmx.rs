@@ -146,9 +146,10 @@ impl hardware_vt::HardwareVt for Vmx {
         //  software should execute VMCLEAR on a VMCS region before making the
         //  corresponding VMCS active with VMPTRLD for the first time."
         // See: 25.11.3 Initializing a VMCS
-        todo!("E#2-1");
+        // todo!("E#2-1");
         // Instruction: "Clear" the VMCS with the VMCLEAR instruction
         // Hint: vmclear(), self.vmcs_region
+        vmclear(&mut self.vmcs_region);
 
         // Then, make it "active" and "current" using the VMPTRLD instruction.
         // This instruction requires that the VMCS revision identifier of the
