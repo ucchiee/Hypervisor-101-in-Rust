@@ -107,11 +107,14 @@ impl hardware_vt::HardwareVt for Vmx {
         // "Software can discover the VMCS revision identifier that a processor
         //  uses by reading the VMX capability MSR IA32_VMX_BASIC (see Appendix A.1)."
         // See: 25.2 FORMAT OF THE VMCS REGION
-        todo!("E#1-2");
+        // todo!("E#1-2");
         // Instruction: Set the revision ID in the VMXON region and execute the
         //              VMXON instruction.
         // Hint: rdmsr(), x86::msr::IA32_VMX_BASIC,
         //       self.vmxon_region and vmxon()
+        let rev_id = rdmsr(x86::msr::IA32_VMX_BASIC) as u32;
+        self.vmxon_region.revision_id = rev_id;
+        vmxon(&mut self.vmxon_region);
     }
 
     /// Configures VMX. We intercept #BP, #UD, #PF, enable VMX-preemption timer
