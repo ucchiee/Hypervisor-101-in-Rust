@@ -68,9 +68,12 @@ impl hardware_vt::HardwareVt for Vmx {
         // "Before system software can enter VMX operation, it enables VMX by
         //  setting CR4.VMXE[bit 13] = 1."
         // See: 24.7 ENABLING AND ENTERING VMX OPERATION
-        todo!("E#1-1");
+        // todo!("E#1-1");
         // Instruction: Enable VMX by setting the VMXE bit in CR4.
         // Hint: cr4(), cr4_write(), Cr4::CR4_ENABLE_VMX
+        let mut cr4_val = cr4();
+        cr4_val |= Cr4::CR4_ENABLE_VMX;
+        cr4_write(cr4_val);
 
         // Prepare for entering VMX operation by executing the VMXON instruction.
         // To enter VMX operation, several requirements must be met or the
