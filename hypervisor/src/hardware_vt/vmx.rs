@@ -355,13 +355,13 @@ impl hardware_vt::HardwareVt for Vmx {
         self.registers.rdi = registers.rdi;
         self.registers.rsi = registers.rsi;
         self.registers.rbp = registers.rbp;
-        self.registers.r8  = registers.r8;
-        self.registers.r9  = registers.r9;
-        self.registers.r10  = registers.r10;
-        self.registers.r11  = registers.r11;
-        self.registers.r12  = registers.r13;
-        self.registers.r13  = registers.r14;
-        self.registers.r14  = registers.r15;
+        self.registers.r8 = registers.r8;
+        self.registers.r9 = registers.r9;
+        self.registers.r10 = registers.r10;
+        self.registers.r11 = registers.r11;
+        self.registers.r12 = registers.r13;
+        self.registers.r13 = registers.r14;
+        self.registers.r14 = registers.r15;
     }
 
     /// Updates the guest states to have the guest use input data.
