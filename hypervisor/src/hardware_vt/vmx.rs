@@ -256,9 +256,18 @@ impl hardware_vt::HardwareVt for Vmx {
         // Hint: (1) IA32_VMX_PROCBASED_CTLS2_ENABLE_EPT_FLAG
         //       (2) vmwrite(), vmcs::control::EPTP_FULL, nested_pml4_addr,
         //           EPT_POINTER_PAGE_WALK_LENGTH_4, EPT_POINTER_MEMORY_TYPE_WRITE_BACK
+        // (1)
         vmwrite(
             vmcs::control::SECONDARY_PROCBASED_EXEC_CONTROLS,
-            adjust_vmx_control(VmxControl::ProcessorBased2, 0),
+            adjust_vmx_control(
+                VmxControl::ProcessorBased2,
+                IA32_VMX_PROCBASED_CTLS2_ENABLE_EPT_FLAG,
+            ),
+        );
+        // (2)
+        vmwrite(
+            vmcs::control::EPTP_FULL,
+            nested_pml4_addr | EPT_POINTER_PAGE_WALK_LENGTH_4 | EPT_POINTER_MEMORY_TYPE_WRITE_BACK,
         );
 
         // Intercept #BP, #UD, #PF.
