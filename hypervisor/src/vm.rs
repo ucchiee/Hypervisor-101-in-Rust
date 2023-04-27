@@ -178,12 +178,12 @@ impl Vm {
         let pd = pdpte.next_table_mut();
         let pde = self.walk_table(pd, pdi);
 
-        warn!("E#6-1");
+        // warn!("E#6-1");
         // Instruction: Enable copy-on-write semantic by making pages non-writable
         // Hint: NestedPagingStructureEntryType::RxWriteBack
         let flags = self
             .vt
-            .nps_entry_flags(NestedPagingStructureEntryType::RwxWriteBack);
+            .nps_entry_flags(NestedPagingStructureEntryType::RxWriteBack);
 
         // Locate PT, index it, build PTe as needed
         // todo!("E#5-3");
